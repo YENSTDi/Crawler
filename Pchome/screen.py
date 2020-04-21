@@ -2,53 +2,16 @@ import pandas as pd
 import re
 import time
 
-from selenium import webdriver
 from bs4 import BeautifulSoup as bs
+
+from pchome_use import get_all_next, get_page_source, stopWord_split, to_json
 
 set_path = 'data/'
 
-def get_page_source(url):
-    print("正在取得網頁原始碼 ==> {}".format(url))
-    driver = webdriver.Chrome()
-    driver.get(url)
-    time.sleep(3)
-    htmls = driver.page_source
-    driver.close()
-    return htmls
-
-def stopWord_split(df):
-    tmp = re.split('[★].*[★]', df)
-    if isinstance(tmp, list) and len(tmp) > 1:
-        tmp = tmp[1]
-    else:
-        tmp = df
-    return tmp
-
-def to_json(df, path=""):
-    if path == "":
-        path = 'noname.json'
-
-    df.to_json(path, orient='records', force_ascii=False, lines=True)
-
-
 def Screen_go():
-    def get_all_next(url):
-        print('正在取得全部網頁')
-        nextpage = []
-        nextpage.append(url)
-        html = get_page_source(url)
-        soup = bs(html,'html.parser')
-        for i in soup.select('#PaginationContainer > ul > li > a'):
-            if i.text != '下一頁':
-                nexts = i['href']
-                nexts = 'https://' + nexts[2:]
-                nextpage.append(nexts)
-        return nextpage
-
     def paser(url):
         r1 = []
         r2 = []
-        nexts = ''
         html = get_page_source(url)
         soup = bs(html, 'html.parser')
 
@@ -81,6 +44,7 @@ def Screen_go():
             "price": r2
         })
         return df
+
     urls = {
         "acer": 'https://24h.pchome.com.tw/store/DSABEL',
         "asus": 'https://24h.pchome.com.tw/store/DSAB03',
@@ -100,6 +64,7 @@ def Screen_go():
 
     now = time.strftime("%y%m%d%H%M%S", time.localtime())
     to_json(pds, set_path + '{}Screen.json'.format(now))
+
 
 if __name__ == "__main__":
     Screen_go()

@@ -39,4 +39,8 @@ def to_json(df, path=""):
     if path == "":
         path = 'noname.json'
 
-    df.to_json(path, orient='records', force_ascii=False, lines=True)
+    try:
+        df.to_json(path, orient='records', force_ascii=False, lines=True)
+        print(f"{path} ==> 資料寫入成功")
+    except:
+        print(f"{path} ==> 資料寫入錯誤")

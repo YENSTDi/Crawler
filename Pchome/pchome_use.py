@@ -4,6 +4,7 @@ import re
 from selenium import webdriver
 from bs4 import BeautifulSoup as bs
 
+# 取得所有下一頁網址
 def get_all_next(url):
     print('正在取得全部網頁')
     nextpage = []
@@ -17,6 +18,7 @@ def get_all_next(url):
             nextpage.append(nexts)
     return nextpage
 
+# 取得網頁原始碼
 def get_page_source(url):
     print("正在取得網頁原始碼 ==> {}".format(url))
     driver = webdriver.Chrome()
@@ -26,7 +28,7 @@ def get_page_source(url):
     driver.close()
     return htmls
 
-
+# 去除名稱多餘字詞
 def stopWord_split(df):
     tmp = re.split('[★].*[★]', df)
     if isinstance(tmp, list) and len(tmp) > 1:
@@ -35,6 +37,7 @@ def stopWord_split(df):
         tmp = df
     return tmp
 
+# 將DF存至json
 def to_json(df, path=""):
     if path == "":
         path = 'noname.json'

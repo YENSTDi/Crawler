@@ -79,7 +79,7 @@ def compare_trend2():
     print(group)
 
 if __name__ == "__main__":
-    # Screen_go()
-    compare_trend2()
+    Screen_go()
+    # compare_trend2()
 
 

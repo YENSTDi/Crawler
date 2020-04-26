@@ -49,7 +49,8 @@ def Screen_go():
     urls = {
         "acer": 'https://24h.pchome.com.tw/store/DSABEL',
         "asus": 'https://24h.pchome.com.tw/store/DSAB03',
-        "view": 'https://24h.pchome.com.tw/store/DSABEW'
+        "view": 'https://24h.pchome.com.tw/store/DSABEW',
+        "AOC": 'https://24h.pchome.com.tw/store/DSABGK'
     }
 
     pds = pd.DataFrame()
@@ -79,7 +80,7 @@ def compare_trend2():
     print(group)
 
 if __name__ == "__main__":
-    Screen_go()
-    # compare_trend2()
+    # Screen_go()
+    compare_trend2()
 
 

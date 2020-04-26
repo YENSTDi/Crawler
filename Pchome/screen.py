@@ -1,11 +1,13 @@
 import pandas as pd
 import time
+from os import listdir
+from os.path import isfile, join
 
 from bs4 import BeautifulSoup as bs
 
 from pchome_use import get_all_next, get_page_source, stopWord_split, to_json
 
-set_path = 'data/'
+set_path = 'bin/data/'
 
 def Screen_go():
     def paser(url):
@@ -60,10 +62,24 @@ def Screen_go():
 
     pds['name'] = pds['name'].apply(stopWord_split)
     pds = pds.sort_values(by=['price'])
+    pds = pds.drop_duplicates(subset=['name', 'price'], keep=False)
 
     now = time.strftime("%y%m%d%H%M%S", time.localtime())
     to_json(pds, set_path + '{}Screen.json'.format(now))
 
+def compare_trend2():
+    files = [f for f in listdir(set_path) if isfile(join(set_path, f))]
+    data2 = sorted(files, reverse=True)[:2]
+    # print(data2)
+    new = pd.read_json(set_path + data2[0])
+    prev = pd.read_json(set_path + data2[1])
+    group = pd.merge(right=prev, left=new, on='name')
+    group['trend'] = group.apply(lambda x: "down" if x['price_x'] < x['price_y'] else "", axis=1)
+
+    print(group)
 
 if __name__ == "__main__":
-    Screen_go()
+    # Screen_go()
+    compare_trend2()
+
+

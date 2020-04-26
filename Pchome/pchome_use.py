@@ -43,7 +43,8 @@ def to_json(df, path=""):
         path = 'noname.json'
 
     try:
-        df.to_json(path, orient='records', force_ascii=False, lines=True)
-        print(f"{path} ==> 資料寫入成功")
+        df.to_json(path, orient='records', force_ascii=False)
+        # df.to_json(path, orient='records', force_ascii=False, lines=True)
+        print("{} ==> 資料寫入成功".format(path))
     except:
-        print(f"{path} ==> 資料寫入錯誤")
+        print("{} ==> 資料寫入錯誤".format(path))

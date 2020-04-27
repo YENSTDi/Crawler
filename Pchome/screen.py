@@ -82,7 +82,7 @@ def compare_trend2():
     prev = pd.read_json(set_path + data2[1])
     # print(new)
     # print(prev)
-    group = pd.merge(left=new, right=prev, how='left', on='name')
+    group = pd.merge(left=new, right=prev, how='left', on=['name', 'factory', 'platform', 'size'])
     group = group.rename({"price_x": "new", "price_y": "price"}, axis=1)
     group = group.fillna(0)
 
@@ -94,5 +94,6 @@ def compare_trend2():
 
 
 if __name__ == "__main__":
-    # Screen_go()
-    compare_trend2()
+    Screen_go()
+    # compare_trend2()
+

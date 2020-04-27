@@ -71,7 +71,7 @@ def Screen_go():
 def compare_trend2():
     files = [f for f in listdir(set_path) if isfile(join(set_path, f))]
     data2 = sorted(files, reverse=True)[:2]
-    # print(data2)
+    print(data2)
     new = pd.read_json(set_path + data2[0])
     prev = pd.read_json(set_path + data2[1])
     group = pd.merge(right=prev, left=new, on='name')
@@ -82,5 +82,3 @@ def compare_trend2():
 if __name__ == "__main__":
     # Screen_go()
     compare_trend2()
-
-

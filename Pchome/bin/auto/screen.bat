@@ -3,6 +3,5 @@ REM call activate dev
 
 cd /d %~dp0
 cd ../..
-bin\venv\Scripts\activate
+call bin\venv\Scripts\activate dev
 call python screen.py
-pause

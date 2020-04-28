@@ -17,7 +17,12 @@ screen_urls = {
     "acer": 'https://24h.pchome.com.tw/store/DSABEL',
     "asus": 'https://24h.pchome.com.tw/store/DSAB03',
     "view": 'https://24h.pchome.com.tw/store/DSABEW',
-    "AOC": 'https://24h.pchome.com.tw/store/DSABGK'
+    "AOC": 'https://24h.pchome.com.tw/store/DSABGK',
+    "Dell": 'https://24h.pchome.com.tw/store/DSAB92',
+    "hp": 'https://24h.pchome.com.tw/store/DSABA9',
+    "LG": 'https://24h.pchome.com.tw/store/DSABF8',
+    "Samsung" : 'https://24h.pchome.com.tw/store/DSABEJ',
+    "Banq" : 'https://24h.pchome.com.tw/store/DSABF1'
 }
 
 

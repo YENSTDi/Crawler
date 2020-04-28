@@ -56,7 +56,7 @@ def to_json(df, path=""):
 def log(success, path, time_):
     success = "success" if success == 1 else "failed"
     log_path = "bin/log/"
-    with open(log_path + "to_file.txt", "w+") as f:
-        f.write("{}\t{} ==> {}".format(time_, success, path))
+    with open(log_path + "Screen_log.txt", "a+") as f:
+        f.writelines("{}\t{} ==> {}".format(time_, success, path))
 
     print("log in {} ==> {}".format(success, time_))

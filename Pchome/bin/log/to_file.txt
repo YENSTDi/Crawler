@@ -1,1 +1,1 @@
-2020-04-28 01:40:57	жие\ ==> bin/data/200428014057Screen.json
+2020-04-28 01:52:18	success ==> bin/data/200428015218Screen.json2020-04-28 11:03:11	success ==> bin/data/200428110311Screen.json

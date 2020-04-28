@@ -4,6 +4,7 @@ import re
 from selenium import webdriver
 from bs4 import BeautifulSoup as bs
 
+
 # 取得所有下一頁網址
 def get_all_next(url):
     print('正在取得全部網頁')
@@ -18,6 +19,7 @@ def get_all_next(url):
             nextpage.append(nexts)
     return nextpage
 
+
 # 取得網頁原始碼
 def get_page_source(url):
     print("正在取得網頁原始碼 ==> {}".format(url))
@@ -28,6 +30,7 @@ def get_page_source(url):
     driver.close()
     return htmls
 
+
 # 去除名稱多餘字詞
 def stopWord_split(df):
     tmp = re.split('[★].*[★]', df)
@@ -36,6 +39,7 @@ def stopWord_split(df):
     else:
         tmp = df
     return tmp
+
 
 # 將DF存至json
 def to_json(df, path=""):
@@ -52,6 +56,7 @@ def to_json(df, path=""):
         print("{} ==> 資料寫入錯誤".format(path))
 
     log(success=success, path=path, time_=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+
 
 def log(success, path, time_):
     success = "success" if success == 1 else "failed"

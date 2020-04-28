@@ -9,73 +9,81 @@ from bs4 import BeautifulSoup as bs
 from pchome_use import get_all_next, get_page_source, stopWord_split, to_json
 
 set_path = 'bin/data/'
+screen_urls = {
+    "acer": 'https://24h.pchome.com.tw/store/DSABEL',
+    "asus": 'https://24h.pchome.com.tw/store/DSAB03',
+    "view": 'https://24h.pchome.com.tw/store/DSABEW',
+    "AOC": 'https://24h.pchome.com.tw/store/DSABGK'
+}
 
 
-def Screen_go():
-    def paser(url, factory):
-        name_ = []
-        price_ = []
-        factory_ =[]
-        size_ = []
-        html = get_page_source(url)
-        soup = bs(html, 'html.parser')
+def screen_parsing(url, factory):
+    name_ = []
+    price_ = []
+    factory_ = []
+    size_ = []
+    html = get_page_source(url)
+    soup = bs(html, 'html.parser')
 
-        goal_html = ['#Block1Container > * > .mL > .prod_info',# 大區塊
-                     '#Block1Container > * > * > * > .mMV > .prod_info',# 大區塊旁
-                     '#ProdGridContainer > dd'# 小區塊
-                     ]
+    goal_html = ['#Block1Container > * > .mL > .prod_info',  # 大區塊
+                 '#Block1Container > * > * > * > .mMV > .prod_info',  # 大區塊旁
+                 '#ProdGridContainer > dd'  # 小區塊
+                 ]
 
-        for html_patten in goal_html:
-            for i in soup.select(html_patten):
-                name = i.select('h5 > a')[0].text
-                price = i.select('.price_box > * > .price > .value')[0].text
+    # 抓取型號 re
+    name_patten = "..[型|吋]"
 
-                name_patten = "..[型|吋]"
-                re_size = re.search(name_patten, str(name))
-                if re_size is not None:
-                    size = name[re_size.span()[0]:re_size.span()[1]]
-                else:
-                    size = ""
+    for html_patten in goal_html:
+        for i in soup.select(html_patten):
+            name = i.select('h5 > a')[0].text
+            price = i.select('.price_box > * > .price > .value')[0].text
 
-                name_.append(name)
-                price_.append(int(price))
-                factory_.append(factory)
-                size_.append(size)
+            re_size = re.search(name_patten, str(name))
+            if re_size is not None:
+                size = name[re_size.span()[0]:re_size.span()[1]]
+            else:
+                size = ""
 
-        df = pd.DataFrame({
-            "platform": "pchome",
-            "name": name_,
-            "factory": factory_,
-            "size": size_,
-            "price": price_
-        })
-        return df
+            name_.append(name)
+            price_.append(int(price))
+            factory_.append(factory)
+            size_.append(size)
 
-    urls = {
-        "acer": 'https://24h.pchome.com.tw/store/DSABEL',
-        "asus": 'https://24h.pchome.com.tw/store/DSAB03',
-        "view": 'https://24h.pchome.com.tw/store/DSABEW',
-        "AOC": 'https://24h.pchome.com.tw/store/DSABGK'
-    }
+    df = pd.DataFrame({
+        "platform": "pchome",
+        "name": name_,
+        "factory": factory_,
+        "size": size_,
+        "price": price_
+    })
+    return df
 
+
+def screen_go():
     pds = pd.DataFrame()
-    for i in urls:
-        url = urls[i]
+    for i in screen_urls:
+        url = screen_urls[i]
         next_page = get_all_next(url)
         for i2 in next_page:
-            pdo = paser(url=i2, factory=i)
+            pdo = screen_parsing(url=i2, factory=i)
             pds = pd.concat([pdo, pds], ignore_index=True)
 
+    # 去除多餘字元
     pds['name'] = pds['name'].apply(stopWord_split)
+    # 依價格排序--升續
     pds = pds.sort_values(by=['price'])
+    # 去除抓取時的重複資料
     pds = pds.drop_duplicates(subset=['name', 'price'], keep=False)
-
+    # 紀錄時間
     now = time.strftime("%y%m%d%H%M%S", time.localtime())
+    # 存檔
     to_json(pds, set_path + '{}Screen.json'.format(now))
 
 
+# 比較最新兩筆資料差距
 def compare_trend2():
-    files = [f for f in listdir(set_path) if isfile(join(set_path, f))]
+    # 確認是檔案且為json檔
+    files = [f for f in listdir(set_path) if isfile(join(set_path, f)) and f[-4:] == "json"]
     data2 = sorted(files, reverse=True)[:2]
     print(data2)
     new = pd.read_json(set_path + data2[0])
@@ -94,6 +102,5 @@ def compare_trend2():
 
 
 if __name__ == "__main__":
-    Screen_go()
-    # compare_trend2()
-
+    # screen_go()
+    compare_trend2()

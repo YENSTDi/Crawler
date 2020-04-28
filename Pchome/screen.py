@@ -8,7 +8,11 @@ from bs4 import BeautifulSoup as bs
 
 from pchome_use import get_all_next, get_page_source, stopWord_split, to_json
 
+# 資料放置位置設定
 set_path = 'bin/data/'
+
+platform = "pchome"
+item = "screen"
 screen_urls = {
     "acer": 'https://24h.pchome.com.tw/store/DSABEL',
     "asus": 'https://24h.pchome.com.tw/store/DSAB03',
@@ -50,7 +54,7 @@ def screen_parsing(url, factory):
             size_.append(size)
 
     df = pd.DataFrame({
-        "platform": "pchome",
+        "platform": platform,
         "name": name_,
         "factory": factory_,
         "size": size_,
@@ -59,7 +63,7 @@ def screen_parsing(url, factory):
     return df
 
 
-def screen_go():
+def screen_go(is_test=False):
     pds = pd.DataFrame()
     for i in screen_urls:
         url = screen_urls[i]
@@ -67,6 +71,10 @@ def screen_go():
         for i2 in next_page:
             pdo = screen_parsing(url=i2, factory=i)
             pds = pd.concat([pdo, pds], ignore_index=True)
+            if is_test:
+                break
+        if is_test:
+            break
 
     # 去除多餘字元
     pds['name'] = pds['name'].apply(stopWord_split)
@@ -77,7 +85,7 @@ def screen_go():
     # 紀錄時間
     now = time.strftime("%y%m%d%H%M%S", time.localtime())
     # 存檔
-    to_json(pds, set_path + '{}Screen.json'.format(now))
+    to_json(df=pds, path=set_path + '{}Screen.json'.format(now), items=item)
 
 
 # 比較最新兩筆資料差距
@@ -102,5 +110,5 @@ def compare_trend2():
 
 
 if __name__ == "__main__":
-    # screen_go()
-    compare_trend2()
+    screen_go(is_test=True)
+    # compare_trend2()

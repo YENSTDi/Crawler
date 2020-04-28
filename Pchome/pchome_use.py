@@ -42,7 +42,7 @@ def stopWord_split(df):
 
 
 # 將DF存至json
-def to_json(df, path=""):
+def to_json(df,  items, path=""):
     success = 0
     if path == "":
         path = 'noname.json'
@@ -55,13 +55,13 @@ def to_json(df, path=""):
     except:
         print("{} ==> 資料寫入錯誤".format(path))
 
-    log(success=success, path=path, time_=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+    log(success=success, path=path, time_=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), items=items)
 
 
-def log(success, path, time_):
-    success = "success" if success == 1 else "failed"
+def log(success, path, time_, items):
+    success = "successful" if success == 1 else "failed"
     log_path = "bin/log/"
-    with open(log_path + "Screen_log.txt", "a+") as f:
-        f.writelines("{}\t{} ==> {}".format(time_, success, path))
+    with open(log_path + "{}_log.txt".format(items), "a+") as f:
+        f.writelines("{}\t{} ==> {}\n".format(time_, success, path))
 
     print("log in {} ==> {}".format(success, time_))

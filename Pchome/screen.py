@@ -115,5 +115,5 @@ def compare_trend2():
 
 
 if __name__ == "__main__":
-    screen_go()
-    # compare_trend2()
+    # screen_go()
+    compare_trend2()

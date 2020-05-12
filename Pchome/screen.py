@@ -102,7 +102,7 @@ def screen_go(is_test=False):
     # 紀錄時間
     now = time.strftime("%y%m%d%H%M%S", time.localtime())
     # 存檔
-    check_save = to_json(df=pds, path=save_path + '{}_{}.json'.format(now, item))
+    check_save = to_json(df=pds, save_path=save_path, file_name='{}_{}.json'.format(now, item), is_Test=is_test)
     # 紀錄log
     log(platform=platform, log_path=log_path, success=check_save,
         path=save_path + '{}_Screen.json'.format(now),

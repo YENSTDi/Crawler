@@ -57,17 +57,22 @@ def screen_model(name):
 
 
 # 將DF存至json
-def to_json(df, path=""):
-    if path == "":
-        path = 'noname.json'
+def to_json(df, save_path, file_name, is_Test=False):
+    if file_name == "":
+        file_name = 'noname.json'
+
+    if is_Test:
+        file_name = "test" + file_name
+
+
 
     try:
-        df.to_json(path, orient='records')
+        df.to_json(save_path+file_name, orient='records')
         # df.to_json(path, orient='records', force_ascii=False, lines=True)
-        print("{} ==> 資料寫入成功".format(path))
+        print("{} ==> 資料寫入成功".format(save_path+file_name))
         return 1
     except:
-        print("{} ==> 資料寫入錯誤".format(path))
+        print("{} ==> 資料寫入錯誤".format(save_path+file_name))
         return 0
 
 

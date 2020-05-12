@@ -1,15 +1,13 @@
 import pandas as pd
 import time
 import re
+from datetime import datetime
 from os import listdir
 from os.path import isfile, join
 
 from bs4 import BeautifulSoup as bs
 
-from pchome_use import get_all_next, get_page_source, stopWord_split, to_json
-
-# 資料放置位置設定
-set_path = 'bin/data/'
+from pchome_tool import get_all_next, get_page_source, to_json, screen_model, log
 
 platform = "pchome"
 item = "screen"
@@ -21,13 +19,18 @@ screen_urls = {
     "Dell": 'https://24h.pchome.com.tw/store/DSAB92',
     "hp": 'https://24h.pchome.com.tw/store/DSABA9',
     "LG": 'https://24h.pchome.com.tw/store/DSABF8',
-    "Samsung" : 'https://24h.pchome.com.tw/store/DSABEJ',
-    "Banq" : 'https://24h.pchome.com.tw/store/DSABF1'
+    "Samsung": 'https://24h.pchome.com.tw/store/DSABEJ',
+    "Banq": 'https://24h.pchome.com.tw/store/DSABF1'
 }
+
+# 資料放置位置設定
+save_path = '../bin/data/{}/'.format(item)
+log_path = "../bin/log/"
 
 
 def screen_parsing(url, factory):
     name_ = []
+    model_ = []
     price_ = []
     factory_ = []
     size_ = []
@@ -42,6 +45,11 @@ def screen_parsing(url, factory):
     # 抓取型號 re
     name_patten = "..[型|吋]"
 
+    # 設定時間
+    now = datetime.now()
+    now_date = now.strftime("%Y-%m-%d")
+    now_time = now.strftime("%H:%M")
+
     for html_patten in goal_html:
         for i in soup.select(html_patten):
             name = i.select('h5 > a')[0].text
@@ -53,14 +61,20 @@ def screen_parsing(url, factory):
             else:
                 size = ""
 
+            name, model = screen_model(name)
+
             name_.append(name)
+            model_.append(model)
             price_.append(int(price))
             factory_.append(factory)
             size_.append(size)
 
     df = pd.DataFrame({
+        "date": now_date,
+        "time": now_time,
         "platform": platform,
         "name": name_,
+        "model": model_,
         "factory": factory_,
         "size": size_,
         "price": price_
@@ -81,8 +95,6 @@ def screen_go(is_test=False):
         if is_test:
             break
 
-    # 去除多餘字元
-    pds['name'] = pds['name'].apply(stopWord_split)
     # 依價格排序--升續
     pds = pds.sort_values(by=['price'])
     # 去除抓取時的重複資料
@@ -90,17 +102,23 @@ def screen_go(is_test=False):
     # 紀錄時間
     now = time.strftime("%y%m%d%H%M%S", time.localtime())
     # 存檔
-    to_json(df=pds, path=set_path + '{}Screen.json'.format(now), items=item)
+    check_save = to_json(df=pds, path=save_path + '{}_{}.json'.format(now, item))
+    # 紀錄log
+    log(platform=platform, log_path=log_path, success=check_save,
+        path=save_path + '{}_Screen.json'.format(now),
+        time_=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), items=item)
 
+    if is_test:
+        pds.to_csv("test.csv", encoding="big5")
 
 # 比較最新兩筆資料差距
 def compare_trend2():
     # 確認是檔案且為json檔
-    files = [f for f in listdir(set_path) if isfile(join(set_path, f)) and f[-4:] == "json"]
+    files = [f for f in listdir(save_path) if isfile(join(save_path, f)) and f[-4:] == "json"]
     data2 = sorted(files, reverse=True)[:2]
     print(data2)
-    new = pd.read_json(set_path + data2[0])
-    prev = pd.read_json(set_path + data2[1])
+    new = pd.read_json(save_path + data2[0])
+    prev = pd.read_json(save_path + data2[1])
     # print(new)
     # print(prev)
     group = pd.merge(left=new, right=prev, how='left', on=['name', 'factory', 'platform', 'size'])
@@ -115,5 +133,5 @@ def compare_trend2():
 
 
 if __name__ == "__main__":
-    # screen_go()
-    compare_trend2()
+    screen_go(is_test=True)
+    # compare_trend2()

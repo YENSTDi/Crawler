@@ -5,6 +5,7 @@ from datetime import datetime
 from os import listdir
 from os.path import isfile, join
 
+from pymongo import MongoClient
 from bs4 import BeautifulSoup as bs
 
 from pchome_tool import get_all_next, get_page_source, to_json, screen_model, log
@@ -26,6 +27,18 @@ screen_urls = {
 # 資料放置位置設定
 save_path = '../bin/data/{}/'.format(item)
 log_path = "../bin/log/"
+
+
+def to_db(df):
+    client = MongoClient()
+    # 資料庫名稱
+    db = client.crawler
+    table = db.screen
+
+    record = df.to_dict("records")
+
+    result = table.insert_many(record)
+    return result.acknowledged
 
 
 def screen_parsing(url, factory):
@@ -103,8 +116,10 @@ def screen_go(is_test=False):
     now = time.strftime("%y%m%d%H%M%S", time.localtime())
     # 存檔
     check_save = to_json(df=pds, save_path=save_path, file_name='{}_{}.json'.format(now, item), is_Test=is_test)
+    db_result = to_db(df=pds)
+
     # 紀錄log
-    log(platform=platform, log_path=log_path, success=check_save,
+    log(platform=platform, log_path=log_path, success=check_save, db_result=db_result,
         path=save_path + '{}_Screen.json'.format(now),
         time_=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), items=item)
 
@@ -119,9 +134,13 @@ def compare_trend2():
     print(data2)
     new = pd.read_json(save_path + data2[0])
     prev = pd.read_json(save_path + data2[1])
-    # print(new)
-    # print(prev)
-    group = pd.merge(left=new, right=prev, how='left', on=['name', 'factory', 'platform', 'size'])
+    print(new)
+    print(prev)
+    new.to_csv("new.csv", encoding="big5")
+    prev.to_csv("prev.csv", encoding="big5")
+    return 0
+
+    group = pd.merge(left=new, right=prev, how="left", on=list(new.columns.difference(['price'])))
     group = group.rename({"price_x": "new", "price_y": "price"}, axis=1)
     group = group.fillna(0)
 
@@ -129,6 +148,8 @@ def compare_trend2():
     group['price'] = group['price'].astype(int)
 
     group['trend'] = group.apply(lambda x: "down" if x['new'] < x['price'] else "", axis=1)
+
+    group.to_csv('trend.csv', encoding="big5")
     print(group)
 
 

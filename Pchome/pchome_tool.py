@@ -76,9 +76,10 @@ def to_json(df, save_path, file_name, is_Test=False):
         return 0
 
 
-def log(platform, log_path, success, path, time_, items):
+def log(platform, log_path, success, db_result, path, time_, items):
     success = "Successful" if success == 1 else "Failed"
+    db_result = "Successful" if db_result else "Failed"
     with open(log_path + "{}_log.txt".format(items), "a+") as f:
-        f.writelines("{}\t{}\t{} ==> {}\n".format(time_, platform, success, path))
+        f.writelines("{}\t{}\t[file-{} ==> {}]\t[DB-{}]\n".format(time_, platform, success, path, db_result))
 
     print("log in ==> item status:{} ==> {}".format(success, time_))

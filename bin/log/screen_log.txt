@@ -14,9 +14,16 @@
 2020-05-10 11:06:14	successful ==> bin/data/200510110614Screen.json
 2020-05-11 11:06:10	successful ==> bin/data/200511110610Screen.json
 2020-05-12 11:05:54	successful ==> bin/data/200512110554Screen.json
+2020-05-13 01:24:25	pchome	Successful ==> ../bin/data/screen/200513012425_Screen.json
 2020-05-13 01:09:51	pchome	Successful ==> ../bin/data/screen/200513010951_Screen.json
 2020-05-13 01:12:25	pchome	Successful ==> ../bin/data/screen/200513011225_Screen.json
 2020-05-13 01:14:10	pchome	Successful ==> ../bin/data/screen/200513011410_Screen.json
 2020-05-13 01:15:02	pchome	Successful ==> ../bin/data/screen/200513011502_Screen.json
 2020-05-13 01:18:11	pchome	Successful ==> ../bin/data/screen/200513011811_Screen.json
 2020-05-13 01:35:08	pchome	Successful ==> ../bin/data/screen/200513013508_Screen.json
+2020-05-13 01:42:56	pchome	Successful ==> ../bin/data/screen/200513014256_Screen.json
+2020-05-13 11:06:21	pchome	Successful ==> ../bin/data/screen/200513110621_Screen.json
+2020-05-14 11:06:13	pchome	Successful ==> ../bin/data/screen/200514110613_Screen.json
+2020-05-15 11:06:15	pchome	Successful ==> ../bin/data/screen/200515110615_Screen.json
+2020-05-16 11:06:12	pchome	Successful ==> ../bin/data/screen/200516110612_Screen.json
+2020-05-17 11:06:02	pchome	[file-Successful ==> ../bin/data/screen/200517110602_Screen.json]	[DB-Successful]

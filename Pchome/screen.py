@@ -154,5 +154,5 @@ def compare_trend2():
 
 
 if __name__ == "__main__":
-    screen_go(is_test=True)
+    screen_go()
     # compare_trend2()

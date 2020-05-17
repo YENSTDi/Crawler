@@ -1,5 +1,6 @@
 import time
 import re
+from pathlib import Path
 
 from selenium import webdriver
 from bs4 import BeautifulSoup as bs
@@ -64,7 +65,8 @@ def to_json(df, save_path, file_name, is_Test=False):
     if is_Test:
         file_name = "test" + file_name
 
-
+    # 不存在就建立資料夾
+    Path(save_path).mkdir(parents=True, exist_ok=True)
 
     try:
         df.to_json(save_path+file_name, orient='records')

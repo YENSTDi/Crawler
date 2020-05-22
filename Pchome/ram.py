@@ -143,5 +143,5 @@ def compare_trend2():
 
 
 if __name__ == "__main__":
-    ram_go(is_test=True)
+    ram_go()
     # compare_trend2()

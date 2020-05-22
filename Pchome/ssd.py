@@ -145,5 +145,5 @@ def compare_trend2():
 
 
 if __name__ == "__main__":
-    ssd_go(is_test=True)
+    ssd_go()
     # compare_trend2()

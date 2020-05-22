@@ -35,7 +35,7 @@ def to_db(df):
     client = MongoClient()
     # 資料庫名稱
     db = client.crawler
-    table = db.ssd
+    table = db.main3c
 
     record = df.to_dict("records")
 
@@ -77,6 +77,7 @@ def ssd_parsing(url, factory):
         "date": now_date,
         "time": now_time,
         "platform": platform,
+        "type": item,
         "name": name_,
         "model": model_,
         "factory": factory_,

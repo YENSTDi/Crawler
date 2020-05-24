@@ -1,0 +1,17 @@
+<html>
+<head></head>
+<body>
+<h1>Hello home</h1>
+
+
+{% block content %}
+{% for i in context.posts %}
+<p>{{ i }}</p>
+{% endfor %}
+
+<p>{% cycle '00' 'env' %}</p>
+
+{% endblock %}
+
+</body>
+</html>

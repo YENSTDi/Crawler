@@ -1,6 +1,11 @@
-<html>
-<head></head>
-<body>
-<h1>Hello base</h1>
-</body>
-</html>
+{% extends 'page1/home.html' %}
+
+{% block content %}
+
+{% for i in context.posts %}
+<p>{{ i }}</p>
+<p>{% cycle 'a' 'b' 'c' %}</p>
+{% endfor %}
+
+
+{% endblock %}

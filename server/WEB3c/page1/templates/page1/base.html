@@ -1,6 +1,36 @@
-<html>
-<head></head>
-<body>
-<h1>Hello base</h1>
-</body>
-</html>
+{% extends "page1/home.html" %}
+
+{% block picture %}
+    {% if graph.graph %}
+        {{ graph.graph|safe }}
+    {% else %}
+        <p>No graph was provided.</p>
+    {% endif %}
+{% endblock %}
+
+{% block test %}
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+      <thead>
+        <tr>
+          <th>platform</th>
+          <th>model</th>
+          <th>factory</th>
+          <th>price</th>
+          <th>price</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for i in context %}
+        <tr>
+            <td>{{ i.platform }}</td>
+            <td>{{ i.model }}</td>
+            <td>{{ i.factory }}</td>
+            <td>{{ i.price }}</td>
+            <td>111</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+</div>
+{% endblock %}

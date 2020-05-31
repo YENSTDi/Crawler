@@ -19,5 +19,5 @@ from django.urls import path, include
 # 呈現網址
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('page1/', include('page1.urls')),
+    path('', include('page1.urls')),
 ]

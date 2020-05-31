@@ -1,7 +1,16 @@
-from django.shortcuts import render
-
 # Create your views here.
 from django.shortcuts import render
+from django.http import HttpResponse
+from django.template import loader
+
+import plotly.express as px
+from pymongo import MongoClient
+
+df = px.data.gapminder().query("continent=='Oceania'")
+fig = px.line(df, x="year", y="lifeExp", color='country')
+
+graph = fig.to_html(full_html=False)
+plots = {'graph': graph}
 
 posts = [
     {
@@ -18,6 +27,7 @@ posts = [
     }]
 
 
+
 def home(request):
     context = {
         'posts': posts
@@ -26,7 +36,13 @@ def home(request):
 
 
 def base(request):
+    ld = loader.get_template('page1/base.html')
+    client = MongoClient()
+    db = client.crawler
+    coll = db.main3c
+    res = coll.find({'date': '2020-05-23'})
     context = {
-        'posts': posts
+        'context': res, 'graph': plots
     }
-    return render(request, 'page1/base.html', {'context': context})
+    return render(request, 'page1/base.html', context)
+    # return HttpResponse(ld.render(context, request))

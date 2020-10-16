@@ -1,0 +1,12 @@
+{% extends "home.html" %}
+
+{% block files %}
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+  <div class="form-group">
+    <label for="exampleFormControlFile1">Example file input</label>
+    <input type="file" class="form-control-file" name="filex" id="exampleFormControlFile1">
+  </div>
+
+  <button class="btn btn-outline-secondary" type="submit" value="Upload">Button</button>
+</form>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+
+{% block tableData %}
+{% if data %}
+<form action="" method="post">{% csrf_token %}
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th scope="col">name</th>
+                <th scope="col">tag</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for col in data %}
+            <tr>
+                <td><input type="hidden">{{ col.name }}</td>
+                <td>
+                    <div class="btn-group-toggle" data-toggle="buttons">
+                    {% for name in col.r_name %}
+                      <label class="btn btn-outline-primary">
+                        <input type="checkbox" name="{{ col.name }}_{{ name }}"> {{ name }}
+                      </label>
+                    {% endfor %}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="submit">Button</button>
+    </div>
+</form>
+
+{% else %}
+<h2>NO DATA</h2>
+{% endif %}
+
+{% endblock %}

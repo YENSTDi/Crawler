@@ -113,7 +113,20 @@ def ettoday_main():
         art_content = web_GET_data(content)
         art_day_time = web_GET_data(day_time)[0]
         art_type = web_GET_data(type_)[0]
+        
+        art_day_time = art_day_time.replace(' ', '')
+        art_day_time = art_day_time.replace('\n', '')
+        integration = {
+            "day": art_day_time[:-5],
+            "time": art_day_time[-5:],
+            "type": art_type,
+            "news": "ETToday",
+            "title": art_title,
+            "content": art_content
+        }
+        
         time.sleep(random.randint(1,5))
-        # print(art_title, art_content, art_day_time, art_type)
-
+        
+        return integration
+        
 ettoday_main()
